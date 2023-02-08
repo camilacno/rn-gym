@@ -4,12 +4,11 @@ import { SignUp } from '@screens/SignUp'
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
-export function AppRoutes() {
+export function AuthRoutes() {
   return (
     <Navigator screenOptions={{ headerShown: false }}>
-      <Screen name="groups" component={Groups} />
-      <Screen name="players" component={Players} />
-      <Screen name="newGroup" component={NewGroup} />
+      <Screen name="signIn" component={SignIn} />
+      <Screen name="signUp" component={SignUp} />
     </Navigator>
   )
 }
