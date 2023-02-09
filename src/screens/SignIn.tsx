@@ -10,7 +10,7 @@ export function SignIn() {
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
-      <VStack flex={1} bg="gray.700" px={10}>
+      <VStack flex={1} px={10}>
         <Header />
 
         <Center>
