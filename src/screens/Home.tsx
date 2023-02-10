@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FlatList, Heading, HStack, Text, VStack } from 'native-base'
 
-import { Group, HeaderHome } from '@components/index'
+import { ExerciseCard, Group, HeaderHome } from '@components/index'
 
 export function Home() {
   const [groups, setGroups] = useState([
@@ -33,7 +33,7 @@ export function Home() {
         maxH={10}
       />
 
-      <VStack px={8} flex={1}>
+      <VStack px={8}>
         <HStack justifyContent="space-between" mb={5}>
           <Heading color="gray.200" fontSize="md">
             Exercício
@@ -42,6 +42,8 @@ export function Home() {
             4
           </Text>
         </HStack>
+
+        <ExerciseCard />
       </VStack>
     </VStack>
   )
