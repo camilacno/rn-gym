@@ -1,37 +1,37 @@
 import { useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
 import { FlatList, Heading, HStack, Text, VStack } from 'native-base'
 
-import { ExerciseCard, Group, HeaderHome } from '@components/index'
+import { Group } from '@components/Group'
+import { HomeHeader, ExerciseCard } from '@components/index'
+import { AppNavigatiorRoutesProps } from '@routes/app.routes'
 
 export function Home() {
-  const [groups, setGroups] = useState([
-    'costas',
-    'biceps',
-    'triceps',
-    'ombros',
-  ])
+  const [groups, setGroups] = useState(['Costas', 'Bíceps', 'Tríceps', 'ombro'])
   const [exercises, setExercises] = useState([
     'Puxada frontal',
     'Remada curvada',
     'Remada unilateral',
     'Levantamento terra',
+    '1',
+    '2',
+    '3',
   ])
-  const [groupSelected, setGroupSelected] = useState('')
+  const [groupSelected, setGroupSelected] = useState('Costas')
+
+  const navigation = useNavigation<AppNavigatiorRoutesProps>()
+
+  function handleOpenExerciseDetails() {
+    navigation.navigate('exercise')
+  }
 
   return (
     <VStack flex={1}>
-      <HeaderHome />
+      <HomeHeader />
 
       <FlatList
         data={groups}
         keyExtractor={(item) => item}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        _contentContainerStyle={{
-          px: 8,
-        }}
-        my={10}
-        maxH={10}
         renderItem={({ item }) => (
           <Group
             name={item}
@@ -41,13 +41,21 @@ export function Home() {
             onPress={() => setGroupSelected(item)}
           />
         )}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        _contentContainerStyle={{
+          px: 8,
+        }}
+        my={10}
+        maxH={10}
       />
 
-      <VStack px={8}>
+      <VStack px={8} flex={1}>
         <HStack justifyContent="space-between" mb={5}>
           <Heading color="gray.200" fontSize="md" fontFamily="heading">
-            Exercício
+            Exercícios
           </Heading>
+
           <Text color="gray.200" fontSize="sm">
             {exercises.length}
           </Text>
@@ -56,9 +64,13 @@ export function Home() {
         <FlatList
           data={exercises}
           keyExtractor={(item) => item}
-          renderItem={({ item }) => <ExerciseCard />}
+          renderItem={({ item }) => (
+            <ExerciseCard onPress={handleOpenExerciseDetails} />
+          )}
           showsVerticalScrollIndicator={false}
-          _contentContainerStyle={{ paddingBottom: 20 }}
+          _contentContainerStyle={{
+            paddingBottom: 20,
+          }}
         />
       </VStack>
     </VStack>

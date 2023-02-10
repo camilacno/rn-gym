@@ -1,31 +1,26 @@
 import { TouchableOpacity } from 'react-native'
-import { Text, HStack, Heading, VStack, Icon } from 'native-base'
+import { Heading, HStack, Text, VStack, Icon } from 'native-base'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import { UserPhoto } from './UserPhoto'
 
-export function HeaderHome() {
+export function HomeHeader() {
   return (
-    <HStack
-      bg="gray.600"
-      pt={16}
-      pb={5}
-      px={8}
-      alignItems="center"
-      w-full
-      justifyContent="space-between"
-    >
+    <HStack bg="gray.600" pt={16} px={8} py={8} alignItems="center">
       <UserPhoto
-        size={16}
         source={{ uri: 'https://github.com/camilacno.png' }}
+        size={16}
         alt="Imagem do usuário"
+        mr={4}
       />
+
       <VStack flex={1}>
         <Text color="gray.100" fontSize="md">
           Olá,
         </Text>
-        <Heading color="gray.100" fontSize="md">
-          Camila Nepomuceno
+
+        <Heading color="gray.100" fontSize="md" fontFamily="heading">
+          Camila
         </Heading>
       </VStack>
 

@@ -1,14 +1,13 @@
-import { Pressable, IPressableProps } from 'native-base'
-import { Text } from 'native-base'
+import { Text, Pressable, IPressableProps } from 'native-base'
 
 type GroupProps = IPressableProps & {
   name: string
   isActive: boolean
 }
+
 export function Group({ name, isActive, ...rest }: GroupProps) {
   return (
     <Pressable
-      {...rest}
       mr={3}
       w={24}
       h={10}
@@ -22,12 +21,13 @@ export function Group({ name, isActive, ...rest }: GroupProps) {
         borderColor: 'green.500',
         borderWidth: 1,
       }}
+      {...rest}
     >
       <Text
         color={isActive ? 'green.500' : 'gray.200'}
         textTransform="uppercase"
-        fontSize="sm"
-        fontWeight="semibold"
+        fontSize="xs"
+        fontWeight="bold"
       >
         {name}
       </Text>
