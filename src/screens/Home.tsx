@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { FlatList, Heading, HStack, Text, VStack } from 'native-base'
 
-import { Group } from '@components/Group'
-import { HeaderHome } from '@components/HeaderHome'
+import { Group, HeaderHome } from '@components/index'
 
 export function Home() {
   const [groups, setGroups] = useState([

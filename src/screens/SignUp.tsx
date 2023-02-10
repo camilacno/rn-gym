@@ -1,9 +1,7 @@
 import { VStack, Center, Heading, ScrollView } from 'native-base'
 import { useNavigation } from '@react-navigation/native'
 
-import { Input } from '@components/Input'
-import { Button } from '@components/Button'
-import { Header } from '@components/Header'
+import { Input, Button, Header } from '@components/index'
 
 export function SignUp() {
   const navigation = useNavigation()

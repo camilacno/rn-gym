@@ -2,9 +2,7 @@ import { VStack, Text, Center, Heading, ScrollView } from 'native-base'
 import { useNavigation } from '@react-navigation/native'
 
 import { AuthNavigatorRoutesPropos } from '@routes/auth.routes'
-import { Input } from '@components/Input'
-import { Button } from '@components/Button'
-import { Header } from '@components/Header'
+import { Input, Button, Header } from '@components/index'
 
 export function SignIn() {
   const navigation = useNavigation<AuthNavigatorRoutesPropos>()
