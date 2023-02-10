@@ -21,7 +21,7 @@ export function HeaderHome() {
         alt="Imagem do usuário"
       />
       <VStack flex={1}>
-        <Text color="gray.00" fontSize="md">
+        <Text color="gray.100" fontSize="md">
           Olá,
         </Text>
         <Heading color="gray.100" fontSize="md">

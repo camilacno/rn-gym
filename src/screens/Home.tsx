@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FlatList, VStack } from 'native-base'
+import { FlatList, Heading, HStack, Text, VStack } from 'native-base'
 
 import { Group } from '@components/Group'
 import { HeaderHome } from '@components/HeaderHome'
@@ -33,6 +33,17 @@ export function Home() {
         my={10}
         maxH={10}
       />
+
+      <VStack px={8} flex={1}>
+        <HStack justifyContent="space-between" mb={5}>
+          <Heading color="gray.200" fontSize="md">
+            Exercício
+          </Heading>
+          <Text color="gray.200" fontSize="sm">
+            4
+          </Text>
+        </HStack>
+      </VStack>
     </VStack>
   )
 }
