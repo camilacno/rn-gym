@@ -1,9 +1,10 @@
-import { Center, Text } from 'native-base'
+import { VStack } from 'native-base'
+import { HeaderScreens } from '@components/index'
 
 export function Profile() {
   return (
-    <Center flex={1}>
-      <Text color="white">Profile</Text>
-    </Center>
+    <VStack flex={1}>
+      <HeaderScreens title="Perfil" />
+    </VStack>
   )
 }
