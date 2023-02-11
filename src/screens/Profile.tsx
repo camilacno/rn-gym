@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { TouchableOpacity } from 'react-native'
+import * as ImagePicker from 'expo-image-picker'
+
 import {
   Center,
   ScrollView,
@@ -14,7 +16,24 @@ const PHOTO_SIZE = 33
 
 export function Profile() {
   const [photoIsLoading, setPhotoIsLoading] = useState(false)
-  const [hidePass, setHidePass] = useState(true)
+  const [image, setImage] = useState(null)
+
+  async function handleSelectUserPhoto() {
+    await ImagePicker.launchImageLibraryAsync()
+
+    // let result = await ImagePicker.launchImageLibraryAsync({
+    //   mediaTypes: ImagePicker.MediaTypeOptions.All,
+    //   allowsEditing: true,
+    //   aspect: [4, 3],
+    //   quality: 1,
+    // });
+
+    // console.log(result);
+
+    // if (!result.canceled) {
+    //   setImage(result.assets[0].uri);
+    // }
+  }
 
   return (
     <VStack flex={1}>
@@ -38,7 +57,7 @@ export function Profile() {
             />
           )}
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleSelectUserPhoto}>
             <Text
               fontSize="md"
               color="green.500"
