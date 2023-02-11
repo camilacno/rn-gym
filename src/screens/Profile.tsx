@@ -19,7 +19,12 @@ export function Profile() {
   const [image, setImage] = useState(null)
 
   async function handleSelectUserPhoto() {
-    await ImagePicker.launchImageLibraryAsync()
+    await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+      aspect: [4, 4],
+      allowsEditing: true,
+    })
 
     // let result = await ImagePicker.launchImageLibraryAsync({
     //   mediaTypes: ImagePicker.MediaTypeOptions.All,
