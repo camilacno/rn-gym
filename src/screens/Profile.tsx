@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextInput, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import {
   Center,
   ScrollView,
@@ -7,10 +7,7 @@ import {
   Skeleton,
   Text,
   Heading,
-  Icon,
-  Pressable,
 } from 'native-base'
-import { MaterialIcons } from '@expo/vector-icons'
 import { HeaderScreens, UserPhoto, Input, Button } from '@components/index'
 
 const PHOTO_SIZE = 33
@@ -57,8 +54,14 @@ export function Profile() {
           <Input placeholder="E-mail" isDisabled />
         </Center>
 
-        <VStack px={10} mt={5} mb={9}>
-          <Heading color="gray.200" fontSize="md" mb={2} fontWeight="bold">
+        <Center px={10} mt={5} mb={9}>
+          <Heading
+            color="gray.200"
+            fontSize="md"
+            mb={2}
+            fontWeight="bold"
+            alignSelf="flex-start"
+          >
             Alterar senha
           </Heading>
 
@@ -67,7 +70,7 @@ export function Profile() {
           <Input placeholder="Confirme nova senha" secureTextEntry />
 
           <Button title="Atualizar" mt={4} />
-        </VStack>
+        </Center>
       </ScrollView>
     </VStack>
   )
