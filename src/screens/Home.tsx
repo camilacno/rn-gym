@@ -2,9 +2,8 @@ import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { FlatList, Heading, HStack, Text, VStack } from 'native-base'
 
-import { Group } from '@components/Group'
-import { HomeHeader, ExerciseCard } from '@components/index'
 import { AppNavigatiorRoutesProps } from '@routes/app.routes'
+import { HomeHeader, ExerciseCard, Group } from '@components/index'
 
 export function Home() {
   const [groups, setGroups] = useState(['Costas', 'Bíceps', 'Tríceps', 'ombro'])
