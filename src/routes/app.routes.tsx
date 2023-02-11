@@ -20,7 +20,7 @@ type AppRoutes = {
   exercise: undefined
 }
 
-export type AppNavigatiorRoutesProps = BottomTabNavigationProp<AppRoutes>
+export type AppNavigationRoutesProps = BottomTabNavigationProp<AppRoutes>
 
 export function AppRoutes() {
   const { sizes, colors } = useTheme()

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { FlatList, Heading, HStack, Text, VStack } from 'native-base'
 
-import { AppNavigatiorRoutesProps } from '@routes/app.routes'
+import { AppNavigationRoutesProps } from '@routes/app.routes'
 import { HomeHeader, ExerciseCard, Group } from '@components/index'
 
 export function Home() {
@@ -18,7 +18,7 @@ export function Home() {
   ])
   const [groupSelected, setGroupSelected] = useState('Costas')
 
-  const navigation = useNavigation<AppNavigatiorRoutesProps>()
+  const navigation = useNavigation<AppNavigationRoutesProps>()
 
   function handleOpenExerciseDetails() {
     navigation.navigate('exercise')
@@ -47,6 +47,7 @@ export function Home() {
         }}
         my={10}
         maxH={10}
+        minH={10}
       />
 
       <VStack px={8} flex={1}>
