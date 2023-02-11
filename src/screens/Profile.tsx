@@ -16,28 +16,21 @@ const PHOTO_SIZE = 33
 
 export function Profile() {
   const [photoIsLoading, setPhotoIsLoading] = useState(false)
-  const [image, setImage] = useState(null)
+  const [userPhoto, setUserPhoto] = useState('https://github.com/camilacno.png')
 
   async function handleSelectUserPhoto() {
-    await ImagePicker.launchImageLibraryAsync({
+    const photoSelected = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
       aspect: [4, 4],
       allowsEditing: true,
     })
 
-    // let result = await ImagePicker.launchImageLibraryAsync({
-    //   mediaTypes: ImagePicker.MediaTypeOptions.All,
-    //   allowsEditing: true,
-    //   aspect: [4, 3],
-    //   quality: 1,
-    // });
+    if (photoSelected.canceled) {
+      return
+    }
 
-    // console.log(result);
-
-    // if (!result.canceled) {
-    //   setImage(result.assets[0].uri);
-    // }
+    setUserPhoto(photoSelected.assets[0].uri)
   }
 
   return (
@@ -56,7 +49,7 @@ export function Profile() {
             />
           ) : (
             <UserPhoto
-              source={{ uri: 'https://github.com/camilacno.png' }}
+              source={{ uri: userPhoto }}
               alt="Imagem de perfil"
               size={PHOTO_SIZE}
             />
