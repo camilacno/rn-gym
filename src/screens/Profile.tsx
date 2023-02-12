@@ -10,6 +10,7 @@ import {
   Text,
   Heading,
 } from 'native-base'
+
 import { HeaderScreens, UserPhoto, Input, Button } from '@components/index'
 
 const PHOTO_SIZE = 33
