@@ -28,7 +28,13 @@ type FormDataProps = {
 
 const signUpSchema = yup.object({
   userName: yup.string(),
-  password_old: yup.string().min(6, 'Senha deve conter no mínimo 6 caracteres'),
+  password_old: yup
+    .string()
+    .min(6, 'Senha deve conter no mínimo 6 caracteres')
+    .when('password_new', {
+      is: (Field: any) => Field,
+      then: (schema) => schema.required('Senha antiga deve ser informada'),
+    }),
   password_new: yup.string().min(6, 'Senha deve conter no mínimo 6 caracteres'),
   password_confirm: yup
     .string()
