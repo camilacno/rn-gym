@@ -13,6 +13,22 @@ type FormDataProps = {
   password_confirm: string
 }
 
+const signUpSchema = yup.object({
+  userName: yup.string().required('Nome é obrigatório'),
+  email: yup
+    .string()
+    .required('E-mail é obrigatório')
+    .email('Informe um e-mail válido'),
+  password: yup
+    .string()
+    .required('Senha é obrigatória')
+    .min(6, 'Senha deve conter no mínimo 6 caracteres'),
+  password_confirm: yup
+    .string()
+    .required('Confirme a senha.')
+    .oneOf([yup.ref('password'), null], 'A confirmação da senha não confere'),
+})
+
 export function SignUp() {
   const navigation = useNavigation()
 
@@ -21,12 +37,7 @@ export function SignUp() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormDataProps>({
-    defaultValues: {
-      userName: '',
-      email: '',
-      password: '',
-      password_confirm: '',
-    },
+    resolver: yupResolver(signUpSchema),
   })
 
   function handleBackToSignIn() {
@@ -66,7 +77,6 @@ export function SignUp() {
                 errorMessage={errors.userName?.message}
               />
             )}
-            rules={{ required: 'Nome é obrigatório' }}
           />
 
           <Controller
@@ -79,18 +89,10 @@ export function SignUp() {
                 autoCapitalize="none"
                 onChangeText={onChange}
                 value={value}
+                errorMessage={errors.email?.message}
               />
             )}
-            rules={{
-              required: 'E-mail é obrigatório',
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'E-mail inválido',
-              },
-            }}
           />
-
-          <Text color="gray.100">{errors.email?.message}</Text>
 
           <Controller
             control={control}
@@ -101,12 +103,10 @@ export function SignUp() {
                 secureTextEntry
                 onChangeText={onChange}
                 value={value}
+                errorMessage={errors.password?.message}
               />
             )}
-            rules={{ required: 'Senha é obrigatória' }}
           />
-
-          <Text color="gray.100">{errors.password?.message}</Text>
 
           <Controller
             control={control}
@@ -119,11 +119,10 @@ export function SignUp() {
                 value={value}
                 onSubmitEditing={handleSubmit(handleSignUp)}
                 returnKeyType="send"
+                errorMessage={errors.password_confirm?.message}
               />
             )}
-            rules={{ required: 'Confirme sua senha' }}
           />
-          <Text color="gray.100">{errors.password_confirm?.message}</Text>
 
           <Button
             title="Criar e acessar"
