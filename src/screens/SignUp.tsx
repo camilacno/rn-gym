@@ -1,5 +1,5 @@
 import { useForm, Controller } from 'react-hook-form'
-import { VStack, Center, Heading, ScrollView } from 'native-base'
+import { VStack, Center, Heading, ScrollView, Text } from 'native-base'
 import { useNavigation } from '@react-navigation/native'
 
 import { Input, Button, Header } from '@components/index'
@@ -59,7 +59,10 @@ export function SignUp() {
             render={({ field: { onChange, value } }) => (
               <Input placeholder="Nome" onChangeText={onChange} value={value} />
             )}
+            rules={{ required: 'Nome é obrigatório' }}
           />
+
+          <Text color="gray.100">{errors.userName?.message}</Text>
 
           <Controller
             control={control}
@@ -73,7 +76,16 @@ export function SignUp() {
                 value={value}
               />
             )}
+            rules={{
+              required: 'E-mail é obrigatório',
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: 'E-mail inválido',
+              },
+            }}
           />
+
+          <Text color="gray.100">{errors.email?.message}</Text>
 
           <Controller
             control={control}
@@ -86,7 +98,10 @@ export function SignUp() {
                 value={value}
               />
             )}
+            rules={{ required: 'Senha é obrigatória' }}
           />
+
+          <Text color="gray.100">{errors.password?.message}</Text>
 
           <Controller
             control={control}
@@ -101,7 +116,9 @@ export function SignUp() {
                 returnKeyType="send"
               />
             )}
+            rules={{ required: 'Confirme sua senha' }}
           />
+          <Text color="gray.100">{errors.password_confirm?.message}</Text>
 
           <Button
             title="Criar e acessar"
