@@ -57,12 +57,15 @@ export function SignUp() {
             control={control}
             name="userName"
             render={({ field: { onChange, value } }) => (
-              <Input placeholder="Nome" onChangeText={onChange} value={value} />
+              <Input
+                placeholder="Nome"
+                onChangeText={onChange}
+                value={value}
+                errorMessage={errors.userName?.message}
+              />
             )}
             rules={{ required: 'Nome é obrigatório' }}
           />
-
-          <Text color="gray.100">{errors.userName?.message}</Text>
 
           <Controller
             control={control}
