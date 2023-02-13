@@ -1,4 +1,6 @@
 import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 import { VStack, Center, Heading, ScrollView, Text } from 'native-base'
 import { useNavigation } from '@react-navigation/native'
 
