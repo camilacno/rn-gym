@@ -2,19 +2,20 @@ import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { VStack, Center, Heading, ScrollView, Text } from 'native-base'
+import axios from 'axios'
 import { useNavigation } from '@react-navigation/native'
 
 import { Input, Button, Header } from '@components/index'
 
 type FormDataProps = {
-  userName: string
+  name: string
   email: string
   password: string
   password_confirm: string
 }
 
 const signUpSchema = yup.object({
-  userName: yup.string().required('Nome é obrigatório'),
+  name: yup.string().required('Nome é obrigatório'),
   email: yup
     .string()
     .required('E-mail é obrigatório')
@@ -44,13 +45,12 @@ export function SignUp() {
     navigation.goBack()
   }
 
-  function handleSignUp({
-    userName,
-    email,
-    password,
-    password_confirm,
-  }: FormDataProps) {
-    console.log(userName, email, password, password_confirm)
+  async function handleSignUp({ name, email, password }: FormDataProps) {
+    await axios.post('http://192.168.18.27:3333/users', {
+      name,
+      email,
+      password,
+    })
   }
 
   return (
@@ -68,13 +68,13 @@ export function SignUp() {
 
           <Controller
             control={control}
-            name="userName"
+            name="name"
             render={({ field: { onChange, value } }) => (
               <Input
                 placeholder="Nome"
                 onChangeText={onChange}
                 value={value}
-                errorMessage={errors.userName?.message}
+                errorMessage={errors.name?.message}
               />
             )}
           />
