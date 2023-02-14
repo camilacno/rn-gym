@@ -79,7 +79,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       const userLogged = await storageUserget()
       const token = await storageAuthTokenGet()
       if (token && userLogged) {
-        setUser(userLogged)
+        await storageUserAndToken(userLogged, token)
       }
     } catch (error) {
       throw error
@@ -90,9 +90,12 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   async function signOut() {
     try {
-      removeUserAndToken()
+      setIsLoadingUserStoredData(true)
+      await removeUserAndToken()
     } catch (error) {
       throw error
+    } finally {
+      setIsLoadingUserStoredData(false)
     }
   }
 
