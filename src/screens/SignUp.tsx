@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Dimensions } from 'react-native'
 import { VStack, Center, Heading, ScrollView, useToast } from 'native-base'
 import { useForm, Controller } from 'react-hook-form'
@@ -7,6 +8,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { api } from '@services/api'
 import { AppError } from '@utils/AppError'
+import { AppNavigationRoutesProps } from '@routes/app.routes'
+import { useAuth } from '@hooks/useAuth'
+
 import { Input, Button, Header } from '@components/index'
 
 type FormDataProps = {
@@ -33,6 +37,7 @@ const signUpSchema = yup.object({
 })
 
 export function SignUp() {
+  const [isLoading, setIsLoading] = useState(false)
   const {
     control,
     handleSubmit,
@@ -43,7 +48,9 @@ export function SignUp() {
 
   const toast = useToast()
 
-  const navigation = useNavigation()
+  const { signIn } = useAuth()
+
+  const navigation = useNavigation<AppNavigationRoutesProps>()
 
   function handleGoBack() {
     navigation.goBack()
@@ -51,7 +58,9 @@ export function SignUp() {
 
   async function handleSignUp({ name, email, password }: FormDataProps) {
     try {
+      setIsLoading(true)
       await api.post('/users', { name, email, password })
+      await signIn(email, password)
     } catch (error) {
       const isAppError = error instanceof AppError
       const title = isAppError
@@ -64,6 +73,10 @@ export function SignUp() {
         bgColor: 'red.500',
         width: Dimensions.get('window').width * 0.95,
       })
+
+      setIsLoading(false)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -141,6 +154,7 @@ export function SignUp() {
           <Button
             title="Criar e acessar"
             onPress={handleSubmit(handleSignUp)}
+            isLoading={isLoading}
           />
         </Center>
 
