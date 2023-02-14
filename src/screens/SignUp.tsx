@@ -1,8 +1,7 @@
 import { useForm, Controller } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { VStack, Center, Heading, ScrollView } from 'native-base'
 import * as yup from 'yup'
-import { VStack, Center, Heading, ScrollView, Text } from 'native-base'
-import axios from 'axios'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigation } from '@react-navigation/native'
 
 import { Input, Button, Header } from '@components/index'
@@ -15,19 +14,10 @@ type FormDataProps = {
 }
 
 const signUpSchema = yup.object({
-  name: yup.string().required('Nome é obrigatório'),
-  email: yup
-    .string()
-    .required('E-mail é obrigatório')
-    .email('Informe um e-mail válido'),
-  password: yup
-    .string()
-    .required('Senha é obrigatória')
-    .min(6, 'Senha deve conter no mínimo 6 caracteres'),
-  password_confirm: yup
-    .string()
-    .required('Confirme a senha.')
-    .oneOf([yup.ref('password'), null], 'A confirmação da senha não confere'),
+  name: yup.string(),
+  email: yup.string(),
+
+  password: yup.string(),
 })
 
 export function SignUp() {
@@ -46,11 +36,16 @@ export function SignUp() {
   }
 
   async function handleSignUp({ name, email, password }: FormDataProps) {
-    await axios.post('http://192.168.18.27:3333/users', {
-      name,
-      email,
-      password,
+    await fetch('http://192.168.18.27:3333/users', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password }),
     })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
   }
 
   return (
