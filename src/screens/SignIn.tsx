@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Dimensions } from 'react-native'
 import {
   VStack,
@@ -34,6 +35,8 @@ const signInSchema = yup.object({
 })
 
 export function SignIn() {
+  const [isLoading, setIsLoading] = useState(false)
+
   const navigation = useNavigation<AuthNavigatorRoutesPropos>()
 
   const toast = useToast()
@@ -52,8 +55,9 @@ export function SignIn() {
     navigation.navigate('signUp')
   }
 
-  async function handleSignUp({ email, password }: FormDataProps) {
+  async function handleSignIn({ email, password }: FormDataProps) {
     try {
+      setIsLoading(true)
       await signIn(email, password)
     } catch (error) {
       const isAppError = error instanceof AppError
@@ -67,6 +71,8 @@ export function SignIn() {
         bgColor: 'red.500',
         width: Dimensions.get('window').width * 0.95,
       })
+
+      setIsLoading(false)
     }
   }
 
@@ -112,7 +118,11 @@ export function SignIn() {
             )}
           />
 
-          <Button title="Acessar" onPress={handleSubmit(handleSignUp)} />
+          <Button
+            title="Acessar"
+            onPress={handleSubmit(handleSignIn)}
+            isLoading={isLoading}
+          />
         </Center>
 
         <Center mt={24}>

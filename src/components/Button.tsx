@@ -1,6 +1,6 @@
-import { Button as ButtonNativeBase, IIconButtonProps, Text } from 'native-base'
+import { Button as ButtonNativeBase, IButtonProps, Text } from 'native-base'
 
-type ButtonProps = IIconButtonProps & {
+type ButtonProps = IButtonProps & {
   title: string
   variant?: 'solid' | 'outline'
 }
