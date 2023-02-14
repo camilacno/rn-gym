@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { api } from '@services/api'
+import { AppError } from '@utils/AppError'
 import { Input, Button, Header } from '@components/index'
 
 type FormDataProps = {
@@ -17,7 +18,7 @@ type FormDataProps = {
 }
 
 const signUpSchema = yup.object({
-  userName: yup.string().required('Nome é obrigatório'),
+  name: yup.string().required('Nome é obrigatório'),
   email: yup
     .string()
     .required('E-mail é obrigatório')
@@ -53,14 +54,17 @@ export function SignUp() {
     try {
       await api.post('/users', { name, email, password })
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return toast.show({
-          title: error.response?.data.message,
-          placement: 'top',
-          bgColor: 'red.500',
-          width: Dimensions.get('window').width * 0.95,
-        })
-      }
+      const isAppError = error instanceof AppError
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível criar a conta. Tente novamente em alguns minutos.'
+
+      toast.show({
+        title,
+        placement: 'top',
+        bgColor: 'red.500',
+        width: Dimensions.get('window').width * 0.95,
+      })
     }
   }
 
