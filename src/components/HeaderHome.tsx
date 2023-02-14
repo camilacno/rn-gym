@@ -2,9 +2,12 @@ import { TouchableOpacity } from 'react-native'
 import { Heading, HStack, Text, VStack, Icon } from 'native-base'
 import { MaterialIcons } from '@expo/vector-icons'
 
+import { useAuth } from '@hooks/useAuth'
 import { UserPhoto } from './UserPhoto'
 
 export function HomeHeader() {
+  const { signOut } = useAuth()
+
   return (
     <HStack bg="gray.600" pt={16} px={8} py={8} alignItems="center">
       <UserPhoto
@@ -25,7 +28,13 @@ export function HomeHeader() {
       </VStack>
 
       <TouchableOpacity>
-        <Icon as={MaterialIcons} name="logout" color="gray.200" size={7} />
+        <Icon
+          as={MaterialIcons}
+          name="logout"
+          color="gray.200"
+          size={7}
+          onPress={signOut}
+        />
       </TouchableOpacity>
     </HStack>
   )
