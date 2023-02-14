@@ -1,8 +1,10 @@
+import { Dimensions } from 'react-native'
+import { VStack, Center, Heading, ScrollView, useToast } from 'native-base'
 import { useForm, Controller } from 'react-hook-form'
-import { VStack, Center, Heading, ScrollView } from 'native-base'
+import axios from 'axios'
 import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigation } from '@react-navigation/native'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 import { api } from '@services/api'
 import { Input, Button, Header } from '@components/index'
@@ -31,8 +33,6 @@ const signUpSchema = yup.object({
 })
 
 export function SignUp() {
-  const navigation = useNavigation()
-
   const {
     control,
     handleSubmit,
@@ -41,13 +41,27 @@ export function SignUp() {
     resolver: yupResolver(signUpSchema),
   })
 
-  function handleBackToSignIn() {
+  const toast = useToast()
+
+  const navigation = useNavigation()
+
+  function handleGoBack() {
     navigation.goBack()
   }
 
   async function handleSignUp({ name, email, password }: FormDataProps) {
-    const { data } = await api.post('/users', { name, email, password })
-    console.log(data)
+    try {
+      await api.post('/users', { name, email, password })
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return toast.show({
+          title: error.response?.data.message,
+          placement: 'top',
+          bgColor: 'red.500',
+          width: Dimensions.get('window').width * 0.95,
+        })
+      }
+    }
   }
 
   return (
@@ -55,7 +69,7 @@ export function SignUp() {
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
-      <VStack flex={1} bg="gray.700" px={10}>
+      <VStack flex={1} px={10} pb={16}>
         <Header />
 
         <Center>
@@ -110,7 +124,7 @@ export function SignUp() {
             name="password_confirm"
             render={({ field: { onChange, value } }) => (
               <Input
-                placeholder="Confirme sua senha"
+                placeholder="Confirmar a Senha"
                 secureTextEntry
                 onChangeText={onChange}
                 value={value}
@@ -130,8 +144,8 @@ export function SignUp() {
         <Button
           title="Voltar para o login"
           variant="outline"
-          mt={16}
-          onPress={handleBackToSignIn}
+          mt={12}
+          onPress={handleGoBack}
         />
       </VStack>
     </ScrollView>

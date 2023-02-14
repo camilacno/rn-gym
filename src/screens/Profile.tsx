@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, Dimensions } from 'react-native'
 import * as yup from 'yup'
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
 import { useForm, Controller } from 'react-hook-form'
+
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import {
@@ -91,6 +92,7 @@ export function Profile() {
             title: 'Imagem excede o limite, escolha uma imagem de até 5MB',
             placement: 'top',
             bgColor: 'red.500',
+            width: Dimensions.get('window').width * 0.95,
           })
         }
         setUserPhoto(photoSelected.assets[0].uri)
