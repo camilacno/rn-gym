@@ -14,10 +14,19 @@ type FormDataProps = {
 }
 
 const signUpSchema = yup.object({
-  name: yup.string(),
-  email: yup.string(),
-
-  password: yup.string(),
+  userName: yup.string().required('Nome é obrigatório'),
+  email: yup
+    .string()
+    .required('E-mail é obrigatório')
+    .email('Informe um e-mail válido'),
+  password: yup
+    .string()
+    .required('Senha é obrigatória')
+    .min(6, 'Senha deve conter no mínimo 6 caracteres'),
+  password_confirm: yup
+    .string()
+    .required('Confirme a senha.')
+    .oneOf([yup.ref('password'), null], 'A confirmação da senha não confere'),
 })
 
 export function SignUp() {
@@ -36,7 +45,7 @@ export function SignUp() {
   }
 
   async function handleSignUp({ name, email, password }: FormDataProps) {
-    await fetch('http://192.168.18.27:3333/users', {
+    const response = await fetch('http://192.168.18.27:3333/users', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -44,8 +53,8 @@ export function SignUp() {
       },
       body: JSON.stringify({ name, email, password }),
     })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
+    const data = await response.json()
+    console.log(data)
   }
 
   return (
