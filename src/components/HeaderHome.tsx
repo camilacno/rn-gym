@@ -6,7 +6,7 @@ import { useAuth } from '@hooks/useAuth'
 import { UserPhoto } from './UserPhoto'
 
 export function HomeHeader() {
-  const { signOut } = useAuth()
+  const { signOut, user } = useAuth()
 
   return (
     <HStack bg="gray.600" pt={16} px={8} py={8} alignItems="center">
@@ -23,7 +23,7 @@ export function HomeHeader() {
         </Text>
 
         <Heading color="gray.100" fontSize="md" fontFamily="heading">
-          Camila
+          {user.name}
         </Heading>
       </VStack>
 
