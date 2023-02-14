@@ -1,9 +1,18 @@
-import { VStack, Text, Center, Heading, ScrollView } from 'native-base'
+import { Dimensions } from 'react-native'
+import {
+  VStack,
+  Text,
+  Center,
+  Heading,
+  ScrollView,
+  useToast,
+} from 'native-base'
 import { useForm, Controller } from 'react-hook-form'
 import { useNavigation } from '@react-navigation/native'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
+import { AppError } from '@utils/AppError'
 import { useAuth } from '@hooks/useAuth'
 import { AuthNavigatorRoutesPropos } from '@routes/auth.routes'
 import { Input, Button, Header } from '@components/index'
@@ -27,6 +36,8 @@ const signInSchema = yup.object({
 export function SignIn() {
   const navigation = useNavigation<AuthNavigatorRoutesPropos>()
 
+  const toast = useToast()
+
   const { signIn } = useAuth()
 
   const {
@@ -41,8 +52,22 @@ export function SignIn() {
     navigation.navigate('signUp')
   }
 
-  function handleSignUp({ email, password }: FormDataProps) {
-    signIn(email, password)
+  async function handleSignUp({ email, password }: FormDataProps) {
+    try {
+      await signIn(email, password)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível criar a conta. Tente novamente em alguns minutos.'
+
+      toast.show({
+        title,
+        placement: 'top',
+        bgColor: 'red.500',
+        width: Dimensions.get('window').width * 0.95,
+      })
+    }
   }
 
   return (
