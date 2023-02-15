@@ -3,11 +3,11 @@ import { useCallback, useEffect, useState } from 'react'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { FlatList, Heading, HStack, Text, useToast, VStack } from 'native-base'
 
-import { AppNavigationRoutesProps } from '@routes/app.routes'
-import { HomeHeader, ExerciseCard, Group } from '@components/index'
 import { api } from '@services/api'
+import { AppNavigationRoutesProps } from '@routes/app.routes'
 import { AppError } from '@utils/AppError'
 import { ExerciseDTO } from '@dtos/ExerciseDTO'
+import { HomeHeader, ExerciseCard, Group } from '@components/index'
 
 export function Home() {
   const [groups, setGroups] = useState<string[]>([])
@@ -111,7 +111,7 @@ export function Home() {
           data={exercises}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <ExerciseCard onPress={handleOpenExerciseDetails} />
+            <ExerciseCard data={item} onPress={handleOpenExerciseDetails} />
           )}
           showsVerticalScrollIndicator={false}
           _contentContainerStyle={{
