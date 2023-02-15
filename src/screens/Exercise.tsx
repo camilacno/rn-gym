@@ -1,5 +1,6 @@
-import { TouchableOpacity } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useEffect, useState } from 'react'
+import { Dimensions, TouchableOpacity } from 'react-native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import {
   Text,
   VStack,
@@ -8,23 +9,67 @@ import {
   Heading,
   Image,
   Box,
-  ScrollView,
+  useToast,
 } from 'native-base'
 import { Feather } from '@expo/vector-icons'
 
 import { AppNavigationRoutesProps } from '@routes/app.routes'
 
+import { api } from '@services/api'
+import { AppError } from '@utils/AppError'
+import { ExerciseDTO } from '@dtos/ExerciseDTO'
+
 import { Button } from '@components/Button'
 import BodyIcon from '@assets/body.svg'
 import RepetitionsIcon from '@assets/repetitions.svg'
 import SeriesIcon from '@assets/series.svg'
+import { Loading } from '@components/Loading'
+
+type RouteParamsProps = {
+  exerciseId: string
+}
 
 export function Exercise() {
+  const [isLoading, setIsLoading] = useState(true)
+  const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO)
+
   const navigation = useNavigation<AppNavigationRoutesProps>()
+
+  const route = useRoute()
+  const { exerciseId } = route.params as RouteParamsProps
+
+  const toast = useToast()
+
+  async function fetchExerciseDetails() {
+    try {
+      setIsLoading(true)
+      const { data } = await api.get(`/exercises/${exerciseId}`)
+      setExercise(data)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível carregar os detalhes do exercício. Tente novamente em alguns minutos.'
+
+      toast.show({
+        title,
+        placement: 'top',
+        bgColor: 'red.500',
+        width: Dimensions.get('window').width * 0.95,
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   function handleGoBack() {
     navigation.goBack()
   }
+
+  useEffect(() => {
+    fetchExerciseDetails()
+  }, [exerciseId])
+
   return (
     <VStack flex={1}>
       <VStack px={8} pt={12} bg="gray.600">
@@ -39,57 +84,61 @@ export function Exercise() {
           alignItems="center"
         >
           <Heading color="gray.100" fontSize="lg" flexShrink={1} pr={4}>
-            Puxada frontal
+            {exercise.name}
           </Heading>
 
           <HStack alignItems="center">
             <BodyIcon />
             <Text color="gray.100" ml={1} textTransform="capitalize">
-              Costas
+              {exercise.group}
             </Text>
           </HStack>
         </HStack>
       </VStack>
 
-      <ScrollView mb={6}>
+      {isLoading ? (
+        <Loading />
+      ) : (
         <VStack px={8} pt={8} mb={3}>
-          <Image
-            w="full"
-            h={80}
-            source={{
-              uri: 'https://studiomedinaplus.com.br/wp-content/uploads/2020/04/imagem-remada-unilateral-2138125.jpg',
-            }}
-            alt="Imagem exercício"
-            rounded="lg"
-            resizeMode="cover"
-          />
+          <Box rounded="lg" overflow="hidden" mb={3}>
+            <Image
+              w="full"
+              h={80}
+              source={{
+                uri: `${api.defaults.baseURL}/exercise/demo/${exercise.demo}`,
+              }}
+              alt="Demo exercício"
+              resizeMode="cover"
+              rounded="lg"
+            />
+          </Box>
+
+          <Box bg="gray.600" pb={4} px={4} rounded="md">
+            <HStack
+              alignItems="center"
+              justifyContent="space-around"
+              mb={6}
+              mt={5}
+            >
+              <HStack>
+                <SeriesIcon />
+                <Text color="gray.200" ml={2} fontSize="lg">
+                  {exercise.series} séries
+                </Text>
+              </HStack>
+
+              <HStack alignItems="center">
+                <RepetitionsIcon />
+                <Text color="gray.200" ml={2} fontSize="lg">
+                  {exercise.repetitions} repetições
+                </Text>
+              </HStack>
+            </HStack>
+
+            <Button title="Marcar como realizado" />
+          </Box>
         </VStack>
-
-        <Box bg="gray.600" pb={4} px={4} rounded="md" mx={8}>
-          <HStack
-            alignItems="center"
-            justifyContent="space-around"
-            mb={6}
-            mt={5}
-          >
-            <HStack>
-              <SeriesIcon />
-              <Text color="gray.200" ml={2} fontSize="lg">
-                3 séries
-              </Text>
-            </HStack>
-
-            <HStack alignItems="center">
-              <RepetitionsIcon />
-              <Text color="gray.200" ml={2} fontSize="lg">
-                12 repetições
-              </Text>
-            </HStack>
-          </HStack>
-
-          <Button title="Marcar como realizado" />
-        </Box>
-      </ScrollView>
+      )}
     </VStack>
   )
 }
