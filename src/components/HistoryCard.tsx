@@ -1,9 +1,12 @@
-import { TouchableOpacity, TouchableOpacityProps } from 'react-native'
 import { Heading, HStack, Text, VStack } from 'native-base'
 
-type HistoryCardProps = TouchableOpacityProps & {}
+import { HistoryDTO } from '@dtos/HistoryDTO'
 
-export function HistoryCard({ ...rest }: HistoryCardProps) {
+type HistoryCardProps = {
+  data: HistoryDTO
+}
+
+export function HistoryCard({ data }: HistoryCardProps) {
   return (
     <HStack
       w-full
@@ -23,16 +26,16 @@ export function HistoryCard({ ...rest }: HistoryCardProps) {
           textTransform="capitalize"
           numberOfLines={1}
         >
-          Costas
+          {data.group}
         </Heading>
 
         <Text fontSize="lg" color="gray.100" numberOfLines={1}>
-          Puxada frontal
+          {data.name}
         </Text>
       </VStack>
 
       <Text color="gray.300" fontSize="md">
-        08:32
+        {data.hour}
       </Text>
     </HStack>
   )
