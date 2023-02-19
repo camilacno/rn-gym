@@ -25,6 +25,7 @@ import {
   Button,
   Loading,
 } from '@components/index'
+import UserPhotoDefault from '@assets/userPhotoDefault.png'
 
 const PHOTO_SIZE = 33
 
@@ -67,7 +68,6 @@ const profileSchema = yup.object({
 export function Profile() {
   const [isUpdating, setIsUpdating] = useState(false)
   const [photoIsLoading, setPhotoIsLoading] = useState(false)
-  const [userPhoto, setUserPhoto] = useState('https://github.com/camilacno.png')
 
   const toast = useToast()
   const { user, updateUserProfile } = useAuth()
@@ -159,11 +159,15 @@ export function Profile() {
         const userPhotoUploadForm = new FormData()
         userPhotoUploadForm.append('avatar', photoFile)
 
-        await api.patch('/users/avatar', userPhotoUploadForm, {
+        const { data } = await api.patch('/users/avatar', userPhotoUploadForm, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         })
+
+        const userUpdated = user
+        userUpdated.avatar = data.avatar
+        updateUserProfile(userUpdated)
 
         toast.show({
           title: 'Foto atualizada com sucesso',
@@ -198,7 +202,11 @@ export function Profile() {
               />
             ) : (
               <UserPhoto
-                source={{ uri: userPhoto }}
+                source={
+                  user.avatar
+                    ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` }
+                    : UserPhotoDefault
+                }
                 alt="Imagem de perfil"
                 size={PHOTO_SIZE}
               />
