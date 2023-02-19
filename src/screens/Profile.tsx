@@ -144,7 +144,33 @@ export function Profile() {
             width: Dimensions.get('window').width * 0.95,
           })
         }
-        setUserPhoto(photoSelected.assets[0].uri)
+
+        const fileExtension = photoSelected.assets[0].uri.split('.').pop()
+        const userName = (user.name = user.name.replace(
+          /\s+/g,
+          ''
+        )).toLowerCase()
+        const photoFile = {
+          name: `${userName}.${fileExtension}`,
+          uri: photoSelected.assets[0].uri,
+          type: `${photoSelected.assets[0].type}/${fileExtension}`,
+        } as any
+
+        const userPhotoUploadForm = new FormData()
+        userPhotoUploadForm.append('avatar', photoFile)
+
+        await api.patch('/users/avatar', userPhotoUploadForm, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+
+        toast.show({
+          title: 'Foto atualizada com sucesso',
+          placement: 'top',
+          bgColor: 'green.500',
+          width: Dimensions.get('window').width * 0.95,
+        })
       }
     } catch (error) {
       console.log(error)
