@@ -1,12 +1,5 @@
 import React, { useState } from 'react'
 import { TouchableOpacity, Dimensions } from 'react-native'
-import * as yup from 'yup'
-import * as ImagePicker from 'expo-image-picker'
-import * as FileSystem from 'expo-file-system'
-import { useForm, Controller } from 'react-hook-form'
-
-import { yupResolver } from '@hookform/resolvers/yup'
-
 import {
   Center,
   ScrollView,
@@ -16,19 +9,31 @@ import {
   Heading,
   useToast,
 } from 'native-base'
+import * as yup from 'yup'
+import * as ImagePicker from 'expo-image-picker'
+import * as FileSystem from 'expo-file-system'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+import { useAuth } from '@hooks/useAuth'
 import { HeaderScreens, UserPhoto, Input, Button } from '@components/index'
 
 const PHOTO_SIZE = 33
 
 type FormDataProps = {
-  userName?: string
+  name?: string
+  email: string
   password_old?: string
   password_new?: string
   password_confirm?: string
 }
 
 const signUpSchema = yup.object({
-  userName: yup.string(),
+  name: yup.string(),
+  email: yup
+    .string()
+    .required('E-mail é obrigatório')
+    .email('Informe um e-mail válido'),
   password_old: yup
     .string()
     .min(6, 'Senha deve conter no mínimo 6 caracteres')
@@ -50,6 +55,7 @@ export function Profile() {
   const [userPhoto, setUserPhoto] = useState('https://github.com/camilacno.png')
 
   const toast = useToast()
+  const { user } = useAuth()
 
   const {
     control,
@@ -57,15 +63,20 @@ export function Profile() {
     formState: { errors },
   } = useForm<FormDataProps>({
     resolver: yupResolver(signUpSchema),
+    defaultValues: {
+      name: user.name,
+      email: user.email,
+    },
   })
 
   function handleProfileUpdate({
-    userName,
+    name,
+    email,
     password_old,
     password_new,
     password_confirm,
   }: FormDataProps) {
-    console.log(userName, password_old, password_new, password_confirm)
+    console.log(name, password_old, email, password_new, password_confirm)
   }
 
   async function handleSelectUserPhoto() {
@@ -140,18 +151,30 @@ export function Profile() {
 
           <Controller
             control={control}
-            name="userName"
+            name="name"
             render={({ field: { onChange, value } }) => (
               <Input
                 placeholder="Nome"
                 onChangeText={onChange}
                 value={value}
-                errorMessage={errors.userName?.message}
+                errorMessage={errors.name?.message}
               />
             )}
           />
 
-          <Input placeholder="E-mail" isDisabled />
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="E-mail"
+                onChangeText={onChange}
+                value={value}
+                errorMessage={errors.name?.message}
+                isDisabled
+              />
+            )}
+          />
         </Center>
 
         <Center px={10} mt={5} mb={9}>
