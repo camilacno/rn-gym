@@ -20,7 +20,6 @@ export function History() {
       setIsLoading(true)
       const { data } = await api.get('history')
       setExercises(data)
-      console.log(data)
     } catch (error) {
       const isAppError = error instanceof AppError
       const title = isAppError
