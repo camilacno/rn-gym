@@ -32,6 +32,7 @@ As an **user**, you can save and update your profile, register exercises as comp
 
  -   <a href="#about-the-application">About the Application</a>
  -  <a href="#main-libs">Main libs</a>
+ -  <a href="#features">Features</a>
  -  <a href="#project-layouts">Project layouts</a>
  -  <a href="#how-to-run">How to run</a>
   
@@ -46,6 +47,18 @@ Expo:
  - expo-image-picker
  - expo-status-bar
  
+###### *Go to <a href="#content">Content</a>*.
+
+## Features
+
+- Sign in
+- Sign up 
+- Logout 
+- Filter exercises by group 
+- Mark an exercise as completed
+- See the exercises history 
+- Update profile
+
 ###### *Go to <a href="#content">Content</a>*.
 
 ## Project Layouts
